@@ -17,16 +17,12 @@ return static function( ContainerConfigurator $container ) : void {
 
     $services
             // Toast Action
-        ->set( 'action.toast', Toast::class )
-        ->args( [service( 'service.toast' )] )
+        ->set( Toast::class )
+        ->args( [service( ToastService::class )] )
         ->tag( 'controller.service_arguments' );
 
     $services
             // Toast Flashbag Handler
-        ->set( 'service.toast', ToastService::class )
+        ->set( ToastService::class )
         ->args( [service( 'request_stack' ), service( 'logger' )] );
-
-    // $services
-    //         ->alias( Toast::class, 'action.toast' )
-    //         ->alias( ToastService::class, 'service.toast' );
 };
