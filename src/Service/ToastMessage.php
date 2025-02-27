@@ -23,6 +23,8 @@ final class ToastMessage implements DataInterface
 
     public readonly string $message;
 
+    public readonly bool $compact;
+
     public readonly ?string $icon;
 
     /**
@@ -30,6 +32,7 @@ final class ToastMessage implements DataInterface
      * @param string  $status
      * @param string  $message
      * @param ?string $description [optional] accepts {@see Tag::INLINE}
+     * @param bool    $compact
      * @param ?int    $timeout     [auto] time in seconds before the toast is dismissed
      * @param ?string $icon        [auto] based on `$status`
      */
@@ -38,11 +41,13 @@ final class ToastMessage implements DataInterface
         string                 $status,
         string                 $message,
         ?string                $description = null,
+        bool                   $compact = false,
         ?int                   $timeout = null,
         ?string                $icon = null,
     ) {
         $this->setStatus( $status );
         $this->message = escape_html( $message );
+        $this->compact = $compact;
         $this->bump( $description );
         $this->timeout( $timeout );
         $this->setIcon( $icon );

@@ -23,6 +23,7 @@ final class Toast implements ActionInterface
      * @param self::* $status
      * @param string  $message
      * @param ?string $description [optional]
+     * @param bool    $compact
      * @param ?int    $timeout     [auto] time in seconds before the toast is dismissed
      * @param ?string $icon        [auto] based on `$status`
      *
@@ -33,10 +34,11 @@ final class Toast implements ActionInterface
         string  $status,
         string  $message,
         ?string $description = null,
+        bool    $compact = false,
         ?int    $timeout = null,
         ?string $icon = null,
     ) : void {
-        $this->getService()->addMessage( $status, $message, $description, $timeout, $icon );
+        $this->getService()->addMessage( $status, $message, $description, $compact, $timeout, $icon );
     }
 
     public function getService() : ToastService

@@ -13,14 +13,15 @@ use Stringable, InvalidArgumentException;
 final readonly class ToastService
 {
     public function __construct(
-        private Http\RequestStack $requestStack,
-        private LoggerInterface   $logger,
+        private Http\RequestStack  $requestStack,
+        protected ?LoggerInterface $logger,
     ) {}
 
     /**
      * @param 'danger'|'info'|'notice'|'success'|'warning' $status
      * @param string                                       $message
      * @param null|string                                  $description [optional] accepts {@see Tag::INLINE}
+     * @param bool                                         $compact
      * @param ?int                                         $timeout     [auto] time in seconds before the toast is dismissed
      * @param ?string                                      $icon        [auto] based on `$status`
      *
@@ -30,6 +31,7 @@ final readonly class ToastService
         string  $status,
         string  $message,
         ?string $description = null,
+        bool    $compact = false,
         ?int    $timeout = null,
         ?string $icon = null,
     ) : self {
@@ -41,7 +43,7 @@ final readonly class ToastService
             $toastMessage->bump( $description );
         }
         else {
-            $toastMessage = new ToastMessage( $id, $status, $message, $description, $timeout, $icon );
+            $toastMessage = new ToastMessage( $id, $status, $message, $description, $compact, $timeout, $icon );
         }
 
         $this->getFlashBag()->set( $id, [$toastMessage] );
@@ -118,7 +120,7 @@ final readonly class ToastService
             return $string;
         }
 
-        $this->logger->warning(
+        $this->logger?->warning(
             'Unsupported status {status} provided. Returned {return}',
             ['status' => $string, 'return' => 'notice'],
         );
