@@ -2,19 +2,23 @@
 
 declare(strict_types=1);
 
-namespace Core\Symfony\Service;
+namespace Core\Symfony;
 
+use Core\Interface\SettingsInterface;
+use Core\Symfony\ToastService\ToastMessage;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation as Http;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\HttpFoundation\Session\FlashBagAwareSessionInterface;
 use Stringable, InvalidArgumentException;
 
-final readonly class ToastService
+final class ToastService
 {
+    protected ?SettingsInterface $settings = null;
+
     public function __construct(
-        private Http\RequestStack  $requestStack,
-        protected ?LoggerInterface $logger,
+        private readonly Http\RequestStack $requestStack,
+        protected ?LoggerInterface         $logger,
     ) {}
 
     /**
@@ -43,6 +47,7 @@ final readonly class ToastService
             $toastMessage->bump( $description );
         }
         else {
+            $timeout ??= $this->settings?->get( 'toast.timeout', 5_000 ) ?? 5_000;
             $toastMessage = new ToastMessage( $id, $status, $message, $description, $compact, $timeout, $icon );
         }
 

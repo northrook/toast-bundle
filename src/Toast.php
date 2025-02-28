@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Core\Symfony;
 
 use Core\Interface\ActionInterface;
-use Core\Symfony\Service\ToastService;
+use Core\Symfony\{ToastService};
 use JetBrains\PhpStorm\ExpectedValues;
 
 final class Toast implements ActionInterface
