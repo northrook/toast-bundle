@@ -83,6 +83,9 @@ final class ToastMessage implements DataInterface, ViewInterface
         return $this;
     }
 
+    /**
+     * @return array<int, ?string> `[timestamp => ?description]`
+     */
     public function getOccurrences() : array
     {
         return $this->occurrences;
@@ -98,7 +101,7 @@ final class ToastMessage implements DataInterface, ViewInterface
         return $this->getOccurrences()[\array_key_last( $this->occurrences )] ?? null;
     }
 
-    public function getTimestamp() : ?int
+    public function getTimestamp() : int
     {
         return (int) \array_key_last( $this->getOccurrences() );
     }

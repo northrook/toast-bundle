@@ -48,7 +48,6 @@ final class ToastService
         }
         else {
             $timeout ??= $this->settings?->get( 'toast.timeout', 5_000 ) ?? 5_000;
-            \assert( \is_int( $timeout ) || \is_null( $timeout ), __METHOD__ );
             $toastMessage = new ToastMessage( $id, $status, $message, $description, $compact, $timeout, $icon );
         }
 
