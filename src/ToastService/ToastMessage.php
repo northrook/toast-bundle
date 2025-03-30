@@ -103,7 +103,7 @@ final class ToastMessage implements DataInterface, ViewInterface
 
     public function getTimestamp() : int
     {
-        return (int) \array_key_last( $this->getOccurrences() );
+        return (int) ( \array_key_last( $this->getOccurrences() ) ?? \time() );
     }
 
     public function getView( ?IconProviderInterface $iconProvider = null ) : ToastView

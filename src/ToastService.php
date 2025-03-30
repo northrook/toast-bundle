@@ -4,21 +4,20 @@ declare(strict_types=1);
 
 namespace Core\Symfony;
 
-use Core\Interface\SettingsInterface;
+use Psr\Log\{LoggerAwareInterface, LoggerAwareTrait};
 use Core\Symfony\ToastService\ToastMessage;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation as Http;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\HttpFoundation\Session\FlashBagAwareSessionInterface;
 use Stringable, InvalidArgumentException;
 
-final class ToastService
+final class ToastService implements LoggerAwareInterface
 {
-    protected ?SettingsInterface $settings = null;
+    use LoggerAwareTrait;
 
     public function __construct(
         private readonly Http\RequestStack $requestStack,
-        protected ?LoggerInterface         $logger,
+        protected ?int                     $timeout = 5_000,
     ) {}
 
     /**
@@ -47,7 +46,7 @@ final class ToastService
             $toastMessage->bump( $description );
         }
         else {
-            $timeout ??= $this->settings?->get( 'toast.timeout', 5_000 ) ?? 5_000;
+            $timeout ??= $this->timeout;
             $toastMessage = new ToastMessage( $id, $status, $message, $description, $compact, $timeout, $icon );
         }
 

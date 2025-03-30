@@ -24,6 +24,7 @@ final class ToastView extends View
 
     protected bool $hidden = false;
 
+    /** @var array<string,string> */
     protected array $attributes = [];
 
     public function __construct(
@@ -47,7 +48,7 @@ final class ToastView extends View
 
     public function __toString() : string
     {
-        $timestamp = new Time( $this->toast->getTimestamp() ?? 'now' );
+        $timestamp = new Time( $this->toast->getTimestamp() );
         $when      = $timestamp->format( $timestamp::FORMAT_HUMAN, true );
 
         $this->attributes['id']    = $this->toast->id;
